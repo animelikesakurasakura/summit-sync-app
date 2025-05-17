@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -25,12 +26,43 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: '#3A76F0',
+					foreground: '#FFFFFF',
+					100: '#E8F0FE',
+					200: '#BDD2FD',
+					300: '#91B3FB',
+					400: '#6694F8',
+					500: '#3A76F0',
+					600: '#1C5BDF',
+					700: '#144AC3',
+					800: '#0D3AA6',
+					900: '#092A81',
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					DEFAULT: '#6C63FF',
+					foreground: '#FFFFFF',
+					100: '#EEEEFF',
+					200: '#D4D1FF',
+					300: '#B9B5FF',
+					400: '#9F98FF',
+					500: '#6C63FF',
+					600: '#4A40FF',
+					700: '#2D22FF',
+					800: '#1005FF',
+					900: '#0800CF',
+				},
+				accent: {
+					DEFAULT: '#00B8D4',
+					foreground: '#FFFFFF',
+					100: '#E0F7FA',
+					200: '#B2EBF2',
+					300: '#80DEEA',
+					400: '#4DD0E1',
+					500: '#00B8D4',
+					600: '#00ACC1',
+					700: '#0097A7',
+					800: '#00838F',
+					900: '#006064',
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -52,16 +84,6 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +106,31 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					"0%": {
+						opacity: "0",
+						transform: "translateY(10px)"
+					},
+					"100%": {
+						opacity: "1",
+						transform: "translateY(0)"
+					}
+				},
+				'pulse-light': {
+					"0%, 100%": {
+						opacity: "1"
+					},
+					"50%": {
+						opacity: "0.8"
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'pulse-light': 'pulse-light 2s ease-in-out infinite'
 			}
 		}
 	},
