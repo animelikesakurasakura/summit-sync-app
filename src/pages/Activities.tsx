@@ -1,9 +1,26 @@
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
+
+// Определение типа активности
+interface Activity {
+  id: number;
+  title: string;
+  type: string;
+  description: string;
+  speaker?: string;
+  speakers?: string[];
+  date: string;
+  time: string;
+  capacity?: number;
+  remaining?: number;
+  registered?: boolean;
+}
 
 const activitiesList = [
   {
@@ -69,6 +86,12 @@ const activitiesList = [
 ];
 
 const Activities = () => {
+  // Состояние для хранения записей пользователей
+  const [userRegistrations, setUserRegistrations] = useState<Record<number, boolean>>({});
+  
+  // Состояние для хранения обновленных доступных мест
+  const [updatedRemaining, setUpdatedRemaining] = useState<Record<number, number>>({});
+
   return (
     <div>
       {/* Hero Section */}
@@ -96,7 +119,42 @@ const Activities = () => {
             <TabsContent value="all" className="mt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {activitiesList.map((activity) => (
-                  <ActivityCard key={activity.id} activity={activity} />
+                  <ActivityCard 
+                    key={activity.id} 
+                    activity={{
+                      ...activity,
+                      registered: userRegistrations[activity.id] || false,
+                      remaining: updatedRemaining[activity.id] !== undefined 
+                        ? updatedRemaining[activity.id] 
+                        : activity.remaining
+                    }}
+                    onRegister={(activityId) => {
+                      setUserRegistrations(prev => ({
+                        ...prev,
+                        [activityId]: true
+                      }));
+                      
+                      if (activity.remaining !== undefined) {
+                        setUpdatedRemaining(prev => ({
+                          ...prev,
+                          [activityId]: (prev[activityId] !== undefined ? prev[activityId] : activity.remaining!) - 1
+                        }));
+                      }
+                    }}
+                    onCancel={(activityId) => {
+                      setUserRegistrations(prev => ({
+                        ...prev,
+                        [activityId]: false
+                      }));
+                      
+                      if (activity.remaining !== undefined) {
+                        setUpdatedRemaining(prev => ({
+                          ...prev,
+                          [activityId]: (prev[activityId] !== undefined ? prev[activityId] : activity.remaining!) + 1
+                        }));
+                      }
+                    }}
+                  />
                 ))}
               </div>
             </TabsContent>
@@ -106,7 +164,42 @@ const Activities = () => {
                 {activitiesList
                   .filter(a => a.type === "workshop")
                   .map((activity) => (
-                    <ActivityCard key={activity.id} activity={activity} />
+                    <ActivityCard 
+                      key={activity.id} 
+                      activity={{
+                        ...activity,
+                        registered: userRegistrations[activity.id] || false,
+                        remaining: updatedRemaining[activity.id] !== undefined 
+                          ? updatedRemaining[activity.id] 
+                          : activity.remaining
+                      }}
+                      onRegister={(activityId) => {
+                        setUserRegistrations(prev => ({
+                          ...prev,
+                          [activityId]: true
+                        }));
+                        
+                        if (activity.remaining !== undefined) {
+                          setUpdatedRemaining(prev => ({
+                            ...prev,
+                            [activityId]: (prev[activityId] !== undefined ? prev[activityId] : activity.remaining!) - 1
+                          }));
+                        }
+                      }}
+                      onCancel={(activityId) => {
+                        setUserRegistrations(prev => ({
+                          ...prev,
+                          [activityId]: false
+                        }));
+                        
+                        if (activity.remaining !== undefined) {
+                          setUpdatedRemaining(prev => ({
+                            ...prev,
+                            [activityId]: (prev[activityId] !== undefined ? prev[activityId] : activity.remaining!) + 1
+                          }));
+                        }
+                      }}
+                    />
                   ))}
               </div>
             </TabsContent>
@@ -116,7 +209,28 @@ const Activities = () => {
                 {activitiesList
                   .filter(a => a.type === "panel")
                   .map((activity) => (
-                    <ActivityCard key={activity.id} activity={activity} />
+                    <ActivityCard 
+                      key={activity.id} 
+                      activity={{
+                        ...activity,
+                        registered: userRegistrations[activity.id] || false,
+                        remaining: updatedRemaining[activity.id] !== undefined 
+                          ? updatedRemaining[activity.id] 
+                          : activity.remaining
+                      }}
+                      onRegister={(activityId) => {
+                        setUserRegistrations(prev => ({
+                          ...prev,
+                          [activityId]: true
+                        }));
+                      }}
+                      onCancel={(activityId) => {
+                        setUserRegistrations(prev => ({
+                          ...prev,
+                          [activityId]: false
+                        }));
+                      }}
+                    />
                   ))}
               </div>
             </TabsContent>
@@ -126,7 +240,42 @@ const Activities = () => {
                 {activitiesList
                   .filter(a => !["workshop", "panel"].includes(a.type))
                   .map((activity) => (
-                    <ActivityCard key={activity.id} activity={activity} />
+                    <ActivityCard 
+                      key={activity.id} 
+                      activity={{
+                        ...activity,
+                        registered: userRegistrations[activity.id] || false,
+                        remaining: updatedRemaining[activity.id] !== undefined 
+                          ? updatedRemaining[activity.id] 
+                          : activity.remaining
+                      }}
+                      onRegister={(activityId) => {
+                        setUserRegistrations(prev => ({
+                          ...prev,
+                          [activityId]: true
+                        }));
+                        
+                        if (activity.remaining !== undefined) {
+                          setUpdatedRemaining(prev => ({
+                            ...prev,
+                            [activityId]: (prev[activityId] !== undefined ? prev[activityId] : activity.remaining!) - 1
+                          }));
+                        }
+                      }}
+                      onCancel={(activityId) => {
+                        setUserRegistrations(prev => ({
+                          ...prev,
+                          [activityId]: false
+                        }));
+                        
+                        if (activity.remaining !== undefined) {
+                          setUpdatedRemaining(prev => ({
+                            ...prev,
+                            [activityId]: (prev[activityId] !== undefined ? prev[activityId] : activity.remaining!) + 1
+                          }));
+                        }
+                      }}
+                    />
                   ))}
               </div>
             </TabsContent>
@@ -150,8 +299,16 @@ const Activities = () => {
   );
 };
 
-const ActivityCard = ({ activity }) => {
-  const getActivityTypeBadge = (type) => {
+interface ActivityCardProps {
+  activity: Activity;
+  onRegister: (id: number) => void;
+  onCancel: (id: number) => void;
+}
+
+const ActivityCard = ({ activity, onRegister, onCancel }: ActivityCardProps) => {
+  const { toast } = useToast();
+  
+  const getActivityTypeBadge = (type: string) => {
     switch (type) {
       case "workshop":
         return <Badge className="bg-blue-500">Мастер-класс</Badge>;
@@ -166,6 +323,22 @@ const ActivityCard = ({ activity }) => {
     }
   };
 
+  const handleRegistration = () => {
+    onRegister(activity.id);
+    toast({
+      title: "Успешно",
+      description: `Вы записаны на мероприятие "${activity.title}"`,
+    });
+  };
+
+  const handleCancel = () => {
+    onCancel(activity.id);
+    toast({
+      title: "Запись отменена",
+      description: `Вы отменили запись на мероприятие "${activity.title}"`,
+    });
+  };
+
   return (
     <Card className="h-full flex flex-col">
       <CardContent className="pt-6 flex-1">
@@ -173,8 +346,15 @@ const ActivityCard = ({ activity }) => {
           <div>
             {getActivityTypeBadge(activity.type)}
           </div>
-          <div className="text-sm text-muted-foreground">
-            {activity.date}, {activity.time}
+          <div className="flex items-center gap-2">
+            <div className="text-sm text-muted-foreground">
+              {activity.date}, {activity.time}
+            </div>
+            {activity.registered && (
+              <Badge variant="outline" className="bg-accent-100 text-accent-800">
+                Вы записаны
+              </Badge>
+            )}
           </div>
         </div>
         <h3 className="text-xl font-bold mb-2">{activity.title}</h3>
@@ -192,15 +372,33 @@ const ActivityCard = ({ activity }) => {
         )}
       </CardContent>
       <CardFooter>
-        <Button
-          className="w-full"
-          variant={activity.remaining === 0 ? "outline" : "default"}
-          disabled={activity.remaining === 0}
-        >
-          {activity.remaining === 0
-            ? "Нет свободных мест"
-            : "Записаться"}
-        </Button>
+        {activity.registered ? (
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={handleCancel}
+          >
+            Отменить запись
+          </Button>
+        ) : (
+          activity.remaining === 0 ? (
+            <Button
+              variant="outline"
+              className="w-full"
+              disabled
+            >
+              Нет свободных мест
+            </Button>
+          ) : (
+            <Button
+              className="w-full"
+              variant={activity.type === "panel" || !activity.capacity ? "secondary" : "default"}
+              onClick={handleRegistration}
+            >
+              {activity.type === "panel" || !activity.capacity ? "Записаться на уведомления" : "Записаться"}
+            </Button>
+          )
+        )}
       </CardFooter>
     </Card>
   );
