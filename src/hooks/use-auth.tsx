@@ -8,7 +8,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: "participant" | "organizer";
+  role: "participant" | "organizer" | "speaker";
 }
 
 // Интерфейс контекста авторизации
@@ -19,6 +19,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
+  getDashboardPath: () => string;
 }
 
 // Создание контекста авторизации
@@ -39,6 +40,13 @@ const mockUsers = [
     email: "participant@conf.ru",
     password: "password123",
     role: "participant" as const
+  },
+  {
+    id: "3",
+    name: "Алексей Спикер",
+    email: "speaker@conf.ru",
+    password: "password123",
+    role: "speaker" as const
   }
 ];
 
@@ -82,7 +90,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           description: `Добро пожаловать, ${userWithoutPassword.name}!`,
         });
         
-        navigate("/");
+        // Перенаправляем в нужный дашборд в зависимости от роли
+        const dashboardPath = getDashboardPathByRole(userWithoutPassword.role);
+        navigate(dashboardPath);
       } else {
         toast({
           variant: "destructive",
@@ -135,7 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         description: `Добро пожаловать, ${name}!`,
       });
       
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       toast({
         variant: "destructive",
@@ -158,6 +168,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  // Получение пути к дашборду по роли
+  const getDashboardPathByRole = (role: User["role"]) => {
+    switch (role) {
+      case "organizer":
+        return "/organizer";
+      case "speaker":
+        return "/speaker";
+      case "participant":
+      default:
+        return "/dashboard";
+    }
+  };
+
+  // Публичная функция для получения пути к дашборду
+  const getDashboardPath = () => {
+    if (!user) return "/";
+    return getDashboardPathByRole(user.role);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -166,7 +195,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         login,
         register,
-        logout
+        logout,
+        getDashboardPath
       }}
     >
       {children}

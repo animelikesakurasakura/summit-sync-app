@@ -6,8 +6,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import MainLayout from "./components/layout/MainLayout";
+import OrganizerLayout from "./components/layout/OrganizerLayout";
+import SpeakerLayout from "./components/layout/SpeakerLayout";
 import HomeLayout from "./components/layout/HomeLayout";
 import Dashboard from "./pages/Dashboard";
+import OrganizerDashboard from "./pages/OrganizerDashboard";
+import SpeakerDashboard from "./pages/SpeakerDashboard";
 import Schedule from "./pages/Schedule";
 import Workshops from "./pages/Workshops";
 import Map from "./pages/Map";
@@ -25,39 +29,75 @@ import Contacts from "./pages/Contacts";
 
 const queryClient = new QueryClient();
 
-// Защищенный роут
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+// Защищенный роут для участников
+const ParticipantRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
   
-  // Пока проверяем авторизацию, ничего не показываем
   if (isLoading) {
     return <div className="flex items-center justify-center h-screen">Загрузка...</div>;
   }
   
-  // Если не авторизован, перенаправляем на страницу входа
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
   
-  // Если авторизован, показываем содержимое
+  if (user?.role !== "participant") {
+    return <Navigate to={user?.role === "organizer" ? "/organizer" : "/speaker"} />;
+  }
+  
+  return <>{children}</>;
+};
+
+// Защищенный роут для организаторов
+const OrganizerRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
+  
+  if (isLoading) {
+    return <div className="flex items-center justify-center h-screen">Загрузка...</div>;
+  }
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  
+  if (user?.role !== "organizer") {
+    return <Navigate to={user?.role === "participant" ? "/dashboard" : "/speaker"} />;
+  }
+  
+  return <>{children}</>;
+};
+
+// Защищенный роут для спикеров
+const SpeakerRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isLoading, user } = useAuth();
+  
+  if (isLoading) {
+    return <div className="flex items-center justify-center h-screen">Загрузка...</div>;
+  }
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  
+  if (user?.role !== "speaker") {
+    return <Navigate to={user?.role === "participant" ? "/dashboard" : "/organizer"} />;
+  }
+  
   return <>{children}</>;
 };
 
 // Для маршрутов, доступных только неавторизованным пользователям
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, getDashboardPath } = useAuth();
   
-  // Пока проверяем авторизацию, ничего не показываем
   if (isLoading) {
     return <div className="flex items-center justify-center h-screen">Загрузка...</div>;
   }
   
-  // Если авторизован, перенаправляем на главную
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to={getDashboardPath()} />;
   }
   
-  // Если не авторизован, показываем содержимое
   return <>{children}</>;
 };
 
@@ -87,13 +127,41 @@ const AuthApp = () => {
         </PublicRoute>
       } />
 
-      {/* Защищенные маршруты */}
+      {/* Защищенные маршруты для участников */}
       <Route path="/dashboard" element={
-        <ProtectedRoute>
+        <ParticipantRoute>
           <MainLayout />
-        </ProtectedRoute>
+        </ParticipantRoute>
       }>
         <Route index element={<Dashboard />} />
+        <Route path="schedule" element={<Schedule />} />
+        <Route path="workshops" element={<Workshops />} />
+        <Route path="map" element={<Map />} />
+        <Route path="chat" element={<Chat />} />
+        <Route path="settings" element={<Settings />} />
+      </Route>
+      
+      {/* Защищенные маршруты для организаторов */}
+      <Route path="/organizer" element={
+        <OrganizerRoute>
+          <OrganizerLayout />
+        </OrganizerRoute>
+      }>
+        <Route index element={<OrganizerDashboard />} />
+        <Route path="schedule" element={<Schedule />} />
+        <Route path="workshops" element={<Workshops />} />
+        <Route path="map" element={<Map />} />
+        <Route path="chat" element={<Chat />} />
+        <Route path="settings" element={<Settings />} />
+      </Route>
+      
+      {/* Защищенные маршруты для спикеров */}
+      <Route path="/speaker" element={
+        <SpeakerRoute>
+          <SpeakerLayout />
+        </SpeakerRoute>
+      }>
+        <Route index element={<SpeakerDashboard />} />
         <Route path="schedule" element={<Schedule />} />
         <Route path="workshops" element={<Workshops />} />
         <Route path="map" element={<Map />} />

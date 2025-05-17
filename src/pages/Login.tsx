@@ -110,8 +110,17 @@ const Login = () => {
               Зарегистрироваться
             </Link>
           </div>
-          <div className="text-sm text-muted-foreground text-center">
-            Для теста: organizer@conf.ru / password123
+          <div className="text-sm text-muted-foreground text-center mt-2">
+            Для теста (роли):
+          </div>
+          <div className="text-xs text-muted-foreground text-center">
+            Организатор: organizer@conf.ru / password123
+          </div>
+          <div className="text-xs text-muted-foreground text-center">
+            Спикер: speaker@conf.ru / password123
+          </div>
+          <div className="text-xs text-muted-foreground text-center">
+            Участник: participant@conf.ru / password123
           </div>
           <div className="text-sm text-center mt-4">
             <Link to="/" className="text-primary hover:underline">
