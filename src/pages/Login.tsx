@@ -113,6 +113,11 @@ const Login = () => {
           <div className="text-sm text-muted-foreground text-center">
             Для теста: organizer@conf.ru / password123
           </div>
+          <div className="text-sm text-center mt-4">
+            <Link to="/" className="text-primary hover:underline">
+              Вернуться на главную
+            </Link>
+          </div>
         </CardFooter>
       </Card>
     </div>
