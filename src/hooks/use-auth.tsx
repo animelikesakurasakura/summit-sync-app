@@ -15,6 +15,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   getDashboardPath: () => string;
+  register: (name: string, email: string, password: string) => Promise<void>;
 }
 
 // Создаем контекст для авторизации
@@ -81,6 +82,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(false);
   };
 
+  const register = async (name: string, email: string, password: string) => {
+    setIsLoading(true);
+    
+    // Имитируем задержку загрузки
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Проверяем, не существует ли уже пользователь с таким email
+    const existingUser = mockUsers.find(u => u.email === email);
+    
+    if (existingUser) {
+      setIsLoading(false);
+      throw new Error("Пользователь с таким email уже существует");
+    }
+    
+    // В реальном приложении здесь был бы запрос к API для создания нового пользователя
+    // Сейчас мы просто создаем нового пользователя локально
+    const newUser = {
+      id: String(mockUsers.length + 1),
+      name,
+      email,
+      role: "participant" as const
+    };
+    
+    // Обновляем состояние
+    setUser(newUser);
+    localStorage.setItem("user", JSON.stringify(newUser));
+    setIsLoading(false);
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
@@ -108,7 +138,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         isLoading,
         login,
         logout,
-        getDashboardPath
+        getDashboardPath,
+        register
       }}
     >
       {children}
