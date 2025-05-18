@@ -4,13 +4,18 @@ import { Card } from "@/components/ui/card";
 import ConferenceStats from "@/components/dashboard/ConferenceStats";
 import UpcomingEvents from "@/components/dashboard/UpcomingEvents";
 import ConferenceMap from "@/components/dashboard/ConferenceMap";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/use-auth";
 
 const Dashboard = () => {
+  const { user, getDashboardPath } = useAuth();
+  const basePath = getDashboardPath();
+  
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Добро пожаловать, Иван</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Добро пожаловать, {user?.name.split(' ')[0] || 'Участник'}</h1>
           <p className="text-muted-foreground">
             Конференция начнется через: 1 час 30 минут
           </p>
@@ -74,9 +79,11 @@ const Dashboard = () => {
               <Button variant="outline" className="w-full justify-start">
                 Время обеда?
               </Button>
-              <Button variant="secondary" className="w-full mt-2">
-                Открыть чат-бота
-              </Button>
+              <Link to={`${basePath}/chat`}>
+                <Button variant="secondary" className="w-full mt-2">
+                  Открыть чат-бота
+                </Button>
+              </Link>
             </div>
           </Card>
         </div>

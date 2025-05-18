@@ -6,7 +6,6 @@ import {
   Calendar, 
   Map, 
   MessageCircle, 
-  Home, 
   Users, 
   Settings, 
   HelpCircle,
@@ -14,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/hooks/use-auth";
 
 interface SidebarProps {
   open: boolean;
@@ -23,6 +23,9 @@ interface SidebarProps {
 const Sidebar = ({ open, setOpen }: SidebarProps) => {
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { getDashboardPath } = useAuth();
+  
+  const basePath = getDashboardPath();
 
   useEffect(() => {
     if (isMobile && open) {
@@ -36,16 +39,16 @@ const Sidebar = ({ open, setOpen }: SidebarProps) => {
   }, [isMobile, open]);
 
   const links = [
-    { to: "/", icon: <Home className="h-5 w-5 mr-2" />, label: "Главная" },
-    { to: "/schedule", icon: <Calendar className="h-5 w-5 mr-2" />, label: "Расписание" },
-    { to: "/workshops", icon: <Users className="h-5 w-5 mr-2" />, label: "Мастер-классы" },
-    { to: "/map", icon: <Map className="h-5 w-5 mr-2" />, label: "Карта" },
-    { to: "/chat", icon: <MessageCircle className="h-5 w-5 mr-2" />, label: "Чат" },
+    { to: basePath, icon: <Calendar className="h-5 w-5 mr-2" />, label: "Главная" },
+    { to: `${basePath}/schedule`, icon: <Calendar className="h-5 w-5 mr-2" />, label: "Расписание" },
+    { to: `${basePath}/workshops`, icon: <Users className="h-5 w-5 mr-2" />, label: "Мастер-классы" },
+    { to: `${basePath}/map`, icon: <Map className="h-5 w-5 mr-2" />, label: "Карта" },
+    { to: `${basePath}/chat`, icon: <MessageCircle className="h-5 w-5 mr-2" />, label: "Чат" },
   ];
 
   const secondaryLinks = [
     { to: "/faq", icon: <HelpCircle className="h-5 w-5 mr-2" />, label: "FAQ" },
-    { to: "/settings", icon: <Settings className="h-5 w-5 mr-2" />, label: "Настройки" },
+    { to: `${basePath}/settings`, icon: <Settings className="h-5 w-5 mr-2" />, label: "Настройки" },
   ];
 
   const isActive = (path: string) => {

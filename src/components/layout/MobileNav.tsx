@@ -1,21 +1,24 @@
 
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Calendar, Users, Map, MessageCircle } from "lucide-react";
+import { Calendar, Users, Map, MessageCircle } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 const MobileNav = () => {
   const location = useLocation();
+  const { getDashboardPath } = useAuth();
+  const basePath = getDashboardPath();
   
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
   const links = [
-    { to: "/", icon: <Home className="h-5 w-5" />, label: "Главная" },
-    { to: "/schedule", icon: <Calendar className="h-5 w-5" />, label: "Расписание" },
-    { to: "/workshops", icon: <Users className="h-5 w-5" />, label: "Мастер-классы" },
-    { to: "/map", icon: <Map className="h-5 w-5" />, label: "Карта" },
-    { to: "/chat", icon: <MessageCircle className="h-5 w-5" />, label: "Чат" },
+    { to: basePath, icon: <Calendar className="h-5 w-5" />, label: "Главная" },
+    { to: `${basePath}/schedule`, icon: <Calendar className="h-5 w-5" />, label: "Расписание" },
+    { to: `${basePath}/workshops`, icon: <Users className="h-5 w-5" />, label: "Мастер-классы" },
+    { to: `${basePath}/map`, icon: <Map className="h-5 w-5" />, label: "Карта" },
+    { to: `${basePath}/chat`, icon: <MessageCircle className="h-5 w-5" />, label: "Чат" },
   ];
 
   return (
