@@ -1,7 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Users, MessageCircle } from "lucide-react";
+import { Calendar, Users, MessageCircle, Newspaper } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Link } from "react-router-dom";
 
@@ -25,13 +25,13 @@ const OrganizerDashboard = () => {
             <Link to={`${basePath}/schedule-management`}>Управление расписанием</Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link to={`${basePath}/reports`}>Отчеты</Link>
+            <Link to={`${basePath}/news-management`}>Управление новостями</Link>
           </Button>
         </div>
       </div>
 
       {/* Статистика конференции */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Участников</CardTitle>
@@ -62,10 +62,20 @@ const OrganizerDashboard = () => {
             <p className="text-xs text-muted-foreground">Требуют вашего внимания</p>
           </CardContent>
         </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Новостей</CardTitle>
+            <Newspaper className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">5</div>
+            <p className="text-xs text-muted-foreground">Опубликовано на сайте</p>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Управление мероприятиями */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>Управление расписанием</CardTitle>
@@ -120,6 +130,28 @@ const OrganizerDashboard = () => {
                     <Link to={`${basePath}/workshops-management`}>Управление</Link>
                   </Button>
                   <Button variant="outline" size="sm">Добавить</Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Управление новостями</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="p-4 border rounded-md">
+                <h3 className="font-medium">Новости конференции</h3>
+                <p className="text-sm text-muted-foreground mt-1">Управление новостями на сайте</p>
+                <div className="flex gap-2 mt-4">
+                  <Button size="sm" asChild>
+                    <Link to={`${basePath}/news-management`}>Управление</Link>
+                  </Button>
+                  <Button variant="outline" size="sm" asChild>
+                    <Link to={`${basePath}/news-management`}>Добавить</Link>
+                  </Button>
                 </div>
               </div>
             </div>

@@ -16,6 +16,7 @@ const HomeLayout = () => {
               <h2 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">Конференция 2025</h2>
             </Link>
             <nav className="hidden md:flex items-center space-x-4">
+              <Link to="/news" className="text-foreground hover:text-primary transition-colors">Новости</Link>
               <Link to="/about" className="text-foreground hover:text-primary transition-colors">О конференции</Link>
               <Link to="/speakers" className="text-foreground hover:text-primary transition-colors">Спикеры</Link>
               <Link to="/activities" className="text-foreground hover:text-primary transition-colors">Активности</Link>
