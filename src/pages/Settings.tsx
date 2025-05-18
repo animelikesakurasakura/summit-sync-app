@@ -7,17 +7,19 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
+import { useTheme } from "@/hooks/use-theme";
 
 const Settings = () => {
   const { toast } = useToast();
   const { user } = useAuth();
+  const { theme, setTheme, isDarkMode } = useTheme();
+  
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
     language: "Russian",
     notifications: true,
     emailNotifications: true,
-    darkMode: false
   });
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +29,14 @@ const Settings = () => {
   
   const handleSwitchChange = (name: string, checked: boolean) => {
     setFormData(prev => ({ ...prev, [name]: checked }));
+  };
+  
+  const handleDarkModeChange = (checked: boolean) => {
+    setTheme(checked ? "dark" : "light");
+    toast({
+      title: "Тема изменена",
+      description: checked ? "Темная тема включена" : "Светлая тема включена"
+    });
   };
   
   const handleSave = () => {
@@ -143,8 +153,8 @@ const Settings = () => {
                 </p>
               </div>
               <Switch
-                checked={formData.darkMode}
-                onCheckedChange={(checked) => handleSwitchChange("darkMode", checked)}
+                checked={isDarkMode}
+                onCheckedChange={handleDarkModeChange}
               />
             </div>
           </CardContent>

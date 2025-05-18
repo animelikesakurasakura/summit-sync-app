@@ -13,7 +13,7 @@ const HomeLayout = () => {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center">
-              <h2 className="text-xl font-bold text-primary">Конференция 2025</h2>
+              <h2 className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">Конференция 2025</h2>
             </Link>
             <nav className="hidden md:flex items-center space-x-4">
               <Link to="/about" className="text-foreground hover:text-primary transition-colors">О конференции</Link>

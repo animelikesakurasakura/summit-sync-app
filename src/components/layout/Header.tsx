@@ -55,7 +55,9 @@ const Header = ({ onMenuToggle }: HeaderProps) => {
         </Button>
         
         <div className="flex items-center">
-          <h2 className="text-xl font-bold text-primary">Конференция 2025</h2>
+          <Link to="/" className="text-xl font-bold text-primary hover:text-primary/80 transition-colors">
+            Конференция 2025
+          </Link>
         </div>
         
         <div className="hidden md:flex items-center ml-8 space-x-1">
