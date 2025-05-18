@@ -24,23 +24,25 @@ export function ThemeProvider({
     () => (localStorage.getItem("theme") as Theme) || defaultTheme
   );
   
-  // Check if the theme preference is dark
-  const isDarkMode = theme === "dark" || 
-    (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
     const root = window.document.documentElement;
     
     root.classList.remove("light", "dark");
     
+    let effectiveTheme: "light" | "dark";
+    
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
-      root.classList.add(systemTheme);
     } else {
-      root.classList.add(theme);
+      effectiveTheme = theme;
     }
+    
+    root.classList.add(effectiveTheme);
+    setIsDarkMode(effectiveTheme === "dark");
     
     localStorage.setItem("theme", theme);
   }, [theme]);
@@ -54,7 +56,9 @@ export function ThemeProvider({
     const handleChange = () => {
       const root = window.document.documentElement;
       root.classList.remove("light", "dark");
-      root.classList.add(mediaQuery.matches ? "dark" : "light");
+      const newTheme = mediaQuery.matches ? "dark" : "light";
+      root.classList.add(newTheme);
+      setIsDarkMode(newTheme === "dark");
     };
     
     mediaQuery.addEventListener("change", handleChange);

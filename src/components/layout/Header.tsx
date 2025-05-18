@@ -19,8 +19,9 @@ interface HeaderProps {
 
 const Header = ({ onMenuToggle }: HeaderProps) => {
   const { toast } = useToast();
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, getDashboardPath } = useAuth();
   const [notifications, setNotifications] = useState(3);
+  const basePath = getDashboardPath();
 
   const handleNotificationClick = () => {
     toast({
@@ -131,7 +132,7 @@ const Header = ({ onMenuToggle }: HeaderProps) => {
                     </div>
                   </div>
                   <DropdownMenuItem asChild>
-                    <Link to="/settings" className="cursor-pointer">
+                    <Link to={`${basePath}/settings`} className="cursor-pointer">
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Настройки</span>
                     </Link>

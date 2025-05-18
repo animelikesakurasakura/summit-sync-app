@@ -3,9 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Users, MessageCircle } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { Link } from "react-router-dom";
 
 const OrganizerDashboard = () => {
-  const { user } = useAuth();
+  const { user, getDashboardPath } = useAuth();
+  const basePath = getDashboardPath();
 
   return (
     <div className="space-y-8">
@@ -19,8 +21,12 @@ const OrganizerDashboard = () => {
           </p>
         </div>
         <div className="hidden sm:flex gap-2">
-          <Button>Управление расписанием</Button>
-          <Button variant="outline">Отчеты</Button>
+          <Button asChild>
+            <Link to={`${basePath}/schedule-management`}>Управление расписанием</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link to={`${basePath}/reports`}>Отчеты</Link>
+          </Button>
         </div>
       </div>
 
@@ -70,7 +76,9 @@ const OrganizerDashboard = () => {
                 <h3 className="font-medium">Основная программа</h3>
                 <p className="text-sm text-muted-foreground mt-1">18 докладов, 4 мастер-класса</p>
                 <div className="flex gap-2 mt-4">
-                  <Button size="sm">Редактировать</Button>
+                  <Button size="sm" asChild>
+                    <Link to={`${basePath}/schedule-management`}>Редактировать</Link>
+                  </Button>
                   <Button variant="outline" size="sm">Экспорт</Button>
                 </div>
               </div>
@@ -78,7 +86,9 @@ const OrganizerDashboard = () => {
                 <h3 className="font-medium">Дополнительная программа</h3>
                 <p className="text-sm text-muted-foreground mt-1">6 круглых столов, 2 панельные дискуссии</p>
                 <div className="flex gap-2 mt-4">
-                  <Button size="sm">Редактировать</Button>
+                  <Button size="sm" asChild>
+                    <Link to={`${basePath}/schedule-management`}>Редактировать</Link>
+                  </Button>
                   <Button variant="outline" size="sm">Экспорт</Button>
                 </div>
               </div>
@@ -96,7 +106,9 @@ const OrganizerDashboard = () => {
                 <h3 className="font-medium">Спикеры</h3>
                 <p className="text-sm text-muted-foreground mt-1">12 подтвержденных, 3 ожидают</p>
                 <div className="flex gap-2 mt-4">
-                  <Button size="sm">Управление</Button>
+                  <Button size="sm" asChild>
+                    <Link to={`${basePath}/speakers-management`}>Управление</Link>
+                  </Button>
                   <Button variant="outline" size="sm">Добавить</Button>
                 </div>
               </div>
@@ -104,7 +116,9 @@ const OrganizerDashboard = () => {
                 <h3 className="font-medium">Мастер-классы</h3>
                 <p className="text-sm text-muted-foreground mt-1">6 подтвержденных, 2 ожидают</p>
                 <div className="flex gap-2 mt-4">
-                  <Button size="sm">Управление</Button>
+                  <Button size="sm" asChild>
+                    <Link to={`${basePath}/workshops-management`}>Управление</Link>
+                  </Button>
                   <Button variant="outline" size="sm">Добавить</Button>
                 </div>
               </div>

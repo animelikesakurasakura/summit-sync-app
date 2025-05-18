@@ -27,6 +27,10 @@ import About from "./pages/About";
 import Speakers from "./pages/Speakers";
 import Activities from "./pages/Activities";
 import Contacts from "./pages/Contacts";
+import Reports from "./pages/Reports";
+import ScheduleManagement from "./pages/ScheduleManagement";
+import SpeakersManagement from "./pages/SpeakersManagement";
+import WorkshopsManagement from "./pages/WorkshopsManagement";
 
 const queryClient = new QueryClient();
 
@@ -154,6 +158,10 @@ const AuthApp = () => {
         <Route path="map" element={<Map />} />
         <Route path="chat" element={<Chat />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="reports" element={<Reports />} />
+        <Route path="schedule-management" element={<ScheduleManagement />} />
+        <Route path="speakers-management" element={<SpeakersManagement />} />
+        <Route path="workshops-management" element={<WorkshopsManagement />} />
       </Route>
       
       {/* Защищенные маршруты для спикеров */}
