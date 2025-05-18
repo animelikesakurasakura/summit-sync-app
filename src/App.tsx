@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,6 +27,8 @@ import Speakers from "./pages/Speakers";
 import Activities from "./pages/Activities";
 import Contacts from "./pages/Contacts";
 import Reports from "./pages/Reports";
+import News from "./pages/News";
+import NewsManagement from "./pages/NewsManagement";
 import ScheduleManagement from "./pages/ScheduleManagement";
 import SpeakersManagement from "./pages/SpeakersManagement";
 import WorkshopsManagement from "./pages/WorkshopsManagement";
@@ -118,6 +119,7 @@ const AuthApp = () => {
         <Route path="activities" element={<Activities />} />
         <Route path="contacts" element={<Contacts />} />
         <Route path="faq" element={<FAQ />} />
+        <Route path="news" element={<News />} />
       </Route>
 
       {/* Аутентификация */}
@@ -162,6 +164,7 @@ const AuthApp = () => {
         <Route path="schedule-management" element={<ScheduleManagement />} />
         <Route path="speakers-management" element={<SpeakersManagement />} />
         <Route path="workshops-management" element={<WorkshopsManagement />} />
+        <Route path="news-management" element={<NewsManagement />} />
       </Route>
       
       {/* Защищенные маршруты для спикеров */}
